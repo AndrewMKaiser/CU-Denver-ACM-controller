@@ -24,7 +24,7 @@ UserSchema.pre('save', function(next) {
 
     // If the user has not modified the password field, then don't rehash it
     if (!user.isModified('password')) return next();
-    
+
     bcrypt.genSalt(10, function(err, salt) {
         if (err) return next(err);
         bcrypt.hash(user.password, salt, function(err, hash) {
