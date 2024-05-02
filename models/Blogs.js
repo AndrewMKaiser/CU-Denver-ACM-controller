@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 require('dotenv').config();
 
-mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
 
 var BlogSchema = new Schema({
