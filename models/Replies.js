@@ -2,8 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 require('dotenv').config();
 
-mongoose.Promise = global.Promise;
-
 var ReplySchema = new Schema({
     authorId: {
         type: mongoose.Schema.Types.ObjectId,
