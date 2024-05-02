@@ -72,14 +72,19 @@ router.put('/:blogId', isAuthenticated, function(req, res) {
 
 // DELETE to delete a blog post
 router.delete('/:blogId', isAuthenticated, function(req, res) {
-    Blog.findOneAndRemove({ _id: req.params.blogId, author: req.user._id }, function(err, blog) {
+    Blog.findOne({ _id: req.params.blogId, author: req.user._id }, function(err, blog) {
         if (err) {
             return res.status(500).json({ success: false, message: 'An error occurred while deleting the blog.', error: err });
         }
         if (!blog) {
             return res.status(404).json({ success: false, message: 'Blog not found or you are unauthorized to delete this blog.' });
         }
-        res.json({ success: true, message: 'Blog deleted.', blog: blog });
+        blog.remove(function(err) {
+            if (err) {
+                return res.status(500).json({ success: false, message: 'An error occurred while deleting the blog.', error: err });
+            }
+            res.json({ success: true, message: 'Blog and all associated deleted.', blog: blog });
+        });
     });
 });
 
