@@ -10,12 +10,10 @@ var ReplySchema = new Schema({
         ref: 'User',
         required: true
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
+    body: {
         type: String,
         required: true
     }
+});
+
+module.exports = mongoose.model('Reply', ReplySchema);
