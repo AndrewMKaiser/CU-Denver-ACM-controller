@@ -1,3 +1,4 @@
+// TODO: Add content-type checks, rate limiting, logging and monitoring, implement RS256 for JWT auth
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
