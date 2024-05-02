@@ -8,9 +8,18 @@ var ReplySchema = new Schema({
         ref: 'User',
         required: true
     },
+    blogId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Blog',
+        required: true
+    },
     body: {
         type: String,
         required: true
+    },
+    date: {
+        type: Date,
+        default: Date.now
     }
 });
 
