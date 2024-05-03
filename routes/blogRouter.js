@@ -8,7 +8,7 @@ const { isAuthenticated } = require('../auth_jwt');
 // GET to fetch all blogs
 router.get('/', function(req, res) {
     Blog.find({})
-        .populate('author', 'name')
+        .populate('author', 'name') // author field will be populated with the name field from the User model
         .exec(function(err, blogs) {
             if (err) {
                 return res.status(500).json({ success: false, message: 'An error occurred while retrieving blogs.' });
@@ -20,7 +20,7 @@ router.get('/', function(req, res) {
 // GET to fetch a single blog post by ID w/ all replies
 router.get('/:blogId', function(req, res) {
     Blog.findById(req.params.blogId)
-        .populate('author', 'name')
+        .populate('author', 'name') // author field will be populated with the name field from the User model
         .exec(function(err, blog) {
             if (err) {
                 return res.status(500).json({ success: false, message: 'An error occurred while retrieving blog.' });
