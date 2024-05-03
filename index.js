@@ -12,9 +12,9 @@ const signupRouter = require('./routes/signupRouter');
 const signinRouter = require('./routes/signinRouter');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.DB,
-    { useNewUrlParser: true, useUnifiedTopology: true }
-);
+mongoose.connect(process.env.DB)  // Updated connection
+    .then(() => console.log('MongoDB connected successfully'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 var app = express();
 app.use(cors());
@@ -46,7 +46,7 @@ app.use('/blogs', blogRouter);
 app.use('/signup', signupRouter);
 app.use('/signin', signinRouter);
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000, () => console.log(`Server running on port ${process.env.PORT || 3000}`));
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Error occurred in application.');

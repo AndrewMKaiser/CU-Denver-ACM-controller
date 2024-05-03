@@ -18,20 +18,16 @@ var UserSchema = new Schema({
     }
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', async function(next) {
     var user = this;
-
-    // If the user has not modified the password field, then don't rehash it
     if (!user.isModified('password')) return next();
-
-    bcrypt.genSalt(10, function(err, salt) {
-        if (err) return next(err);
-        bcrypt.hash(user.password, salt, function(err, hash) {
-            if (err) return next(err);
-            user.password = hash;
-            next();
-        });
-    });
+    try {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+        next();
+    } catch (err) {
+        next(err);
+    }
 });
 
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {

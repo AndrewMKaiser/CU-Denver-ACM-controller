@@ -4,27 +4,29 @@ var router = express.Router();
 var User = require('../models/User');
 var bcrypt = require('bcrypt');
 
-router.post('/', function(req, res) {
+router.post('/', async (req, res) => {
     if (!req.body.name || !req.body.password || !req.body.email) {
         res.status(400).json({ success: false, message: 'Please enter a name, email, and password to sign up.' });
-    } else {
+    } 
+    try {
         var newUser = new User({
             name: req.body.name,
             email: req.body.email,
             password: req.body.password
         });
 
-        newUser.save(function(err) {
-            if (err) {
-                if (err.code === 11000) {
-                    return res.status(400).json({ success: false, message: 'A user with that email already exists.' });
-                } else {
-                    return res.status(500).json({ success: false, message: 'An error occurred during signup.' });
-                }
-            }
-
-            res.json({ success: true, message: 'Successfully created new user.' });
-        });
+        // Hashing moved here to explicitly handle the async nature of bcrypt
+        const salt = await bcrypt.genSalt(10);
+        newUser.password = await bcrypt.hash(newUser.password, salt);
+        
+        await newUser.save();
+        res.json({ success: true, message: 'Successfully created new user.' });
+    } catch (err) {
+        if (err.code === 11000) {
+            return res.status(400).json({ success: false, message: 'A user with that email already exists.' });
+        } else {
+            return res.status(500).json({ success: false, message: 'An error occurred during signup: ' + err.message });
+        }
     }
 });
 
