@@ -40,7 +40,6 @@ var router = express.Router();
 // });
 // app.use(limiter);
 
-var router = express.Router();
 app.use('/', router);
 app.use('/blogs', blogRouter);
 app.use('/signup', signupRouter);
