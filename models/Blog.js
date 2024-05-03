@@ -2,8 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 require('dotenv').config();
 
-mongoose.set('useCreateIndex', true);
-
 var BlogSchema = new Schema({
     title: {
         type: String,
