@@ -24,16 +24,16 @@ var BlogSchema = new Schema({
 });
 
 // Middleware to delete all replies associated with a blog post when the blog post is deleted
-BlogSchema.pre('remove', async function() {
-    try {
-        // Await the completion of deleteMany operation
-        await this.model('Reply').deleteMany({ blogId: this._id });
-    } catch (err) {
-        console.error("Error deleting associated replies:", err);
-        // Rethrow the error to ensure the removal process stops if replies can't be deleted
-        throw err;
-    }
-});
+// BlogSchema.pre('remove', async function() {
+//     try {
+//         // Await the completion of deleteMany operation
+//         await this.model('Reply').deleteMany({ blogId: this._id });
+//     } catch (err) {
+//         console.error("Error deleting associated replies:", err);
+//         // Rethrow the error to ensure the removal process stops if replies can't be deleted
+//         throw err;
+//     }
+// });
 
 
 module.exports = mongoose.model('Blog', BlogSchema);
