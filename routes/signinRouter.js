@@ -27,7 +27,16 @@ router.post('/', async (req, res) => {
 
         const userToken = { id: user._id, email: user.email };
         const token = jwt.sign(userToken, process.env.SECRET_KEY, { expiresIn: '1h' }); // User will need to relog after 1 hour. Prevents token hijacking.
-        res.json({ success: true, token: 'Bearer ' + token, message: 'Successfully signed in.' });
+        res.json({
+            success: true,
+            token: 'Bearer ' + token,
+            message: 'Successfully signed in.',
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email 
+            }
+        });
     } catch (err) {
         console.error(err);
         res.status(500).json({ success: false, message: 'An error occurred during sign in.' });
