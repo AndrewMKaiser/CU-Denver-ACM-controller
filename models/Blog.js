@@ -5,7 +5,8 @@ require('dotenv').config();
 var BlogSchema = new Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     body: {
         type: String,
