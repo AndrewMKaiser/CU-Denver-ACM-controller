@@ -21,13 +21,14 @@ var UserSchema = new Schema({
 UserSchema.pre('save', async function(next) {
     var user = this;
     if (!user.isModified('password')) return next();
-    try {
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(user.password, salt);
-        next();
-    } catch (err) {
-        next(err);
-    }
+    // Middleware removed, as hashing is now handled in the signupRouter.js file
+    // try {
+    //     const salt = await bcrypt.genSalt(10);
+    //     user.password = await bcrypt.hash(user.password, salt);
+    //     next();
+    // } catch (err) {
+    //     next(err);
+    // }
 });
 
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
