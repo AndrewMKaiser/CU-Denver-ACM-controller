@@ -59,9 +59,13 @@ router.put('/:blogId', isAuthenticated, async (req, res) => {
 // DELETE to delete a blog post
 router.delete('/:blogId', isAuthenticated, async (req, res) => {
     try {
-        const blog = await Blog.findOneAndDelete({ _id: req.params.blogId });
+        const blog = await Blog.findOneAndDelete({ _id: req.params.blogId, author: req.user._id });
         if (!blog) {
             return res.status(404).json({ success: false, message: 'Blog not found or you are unauthorized to update this blog.' });
+        }
+        const reviews = await Review.deleteMany({ blogId: req.params.blogId });
+        if (!reviews) {
+            return res.status(404).json({ success: false, message: 'Unable to delete reviews.' });
         }
         res.json({ success: true, message: 'Blog and all associated replies deleted.', blog: blog });
     } catch (err) {
@@ -100,9 +104,7 @@ router.put('/:blogId/replies/:replyId', isAuthenticated, async (req, res) => {
 // DELETE to delete a reply to a blog post
 router.delete('/:blogId/replies/:replyId', isAuthenticated, async (req, res) => {
     try {
-        var replyId = mongoose.Types.ObjectId(req.params.replyId);
-        var userId = mongoose.Types.ObjectId(req.params.user._id);
-        const reply = await Reply.findOneAndRemove({ _id: replyId, authorId: userId });
+        const reply = await Reply.findOneAndRemove({ _id: req.params.replyId, authorId: req.user._id });
         if (!reply) {
             return res.status(404).json({ success: false, message: 'Reply not found or you are unauthorized to delete this reply.' });
         }
