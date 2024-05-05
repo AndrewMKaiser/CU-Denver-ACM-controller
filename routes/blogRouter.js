@@ -64,7 +64,7 @@ router.delete('/:blogId', isAuthenticated, async (req, res) => {
             return res.status(404).json({ success: false, message: 'Blog not found or you are unauthorized to update this blog.' });
         }
         const replies = await Reply.deleteMany({ blogId: req.params.blogId });
-        if (!reviews) {
+        if (!replies) {
             return res.status(404).json({ success: false, message: 'Unable to find and/or delete reviews.', replies: replies });
         }
         res.json({ success: true, message: 'Blog and all associated replies deleted.', blog: blog });
