@@ -60,12 +60,12 @@ router.put('/:blogId', isAuthenticated, async (req, res) => {
 router.delete('/:blogId', isAuthenticated, async (req, res) => {
     try {
         var blogId = mongoose.Types.ObjectId(req.params.blogId);
-        var userId = mongoose.Types.ObjectId(req.params.user._id);
+        var userId = mongoose.Types.ObjectId(req.query.userId);
         const blog = await Blog.findOne({ _id: blogId, author: userId });
         if (!blog) {
             return res.status(404).json({ success: false, message: 'Blog not found or you are unauthorized to delete this blog.' });
         }
-        Blog.remove( { _id: blogId } );
+        await Blog.remove( { _id: blogId } );
         res.json({ success: true, message: 'Blog and all associated replies deleted.', blog: blog });
     } catch (err) {
         res.status(500).json({ success: false, message: 'An error occurred while deleting the blog.', error: err });
