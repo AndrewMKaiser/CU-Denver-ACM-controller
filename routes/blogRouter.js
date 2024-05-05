@@ -59,7 +59,7 @@ router.put('/:blogId', isAuthenticated, async (req, res) => {
 // DELETE to delete a blog post
 router.delete('/:blogId', isAuthenticated, async (req, res) => {
     try {
-        const blog = await Blog.findOneAndDelete({ _id: req.params.blogId, author: req.user._id });
+        const blog = await Blog.findOneAndDelete({ _id: req.params.blogId, authorId: req.user._id });
         if (!blog) {
             return res.status(404).json({ success: false, message: 'Blog not found or you are unauthorized to update this blog.' });
         }
