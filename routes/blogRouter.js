@@ -101,7 +101,9 @@ router.put('/:blogId/replies/:replyId', isAuthenticated, async (req, res) => {
 // DELETE to delete a reply to a blog post
 router.delete('/:blogId/replies/:replyId', isAuthenticated, async (req, res) => {
     try {
-        const reply = await Reply.findOneAndRemove({ _id: req.params.replyId, authorId: req.user._id });
+        var replyId = mongoose.Types.ObjectId(req.params.replyId);
+        var userId = mongoose.Types.ObjectId(req.params.user._id);
+        const reply = await Reply.findOneAndRemove({ _id: replyId, authorId: userId });
         if (!reply) {
             return res.status(404).json({ success: false, message: 'Reply not found or you are unauthorized to delete this reply.' });
         }
